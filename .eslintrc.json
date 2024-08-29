@@ -1,3 +1,17 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "plugin:react/jsx-runtime",
+    "plugin:jsx-a11y/recommended",
+    "next/core-web-vitals"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "ignorePatterns": [
+    "/src/components/ui"
+  ],
+  "rules": {
+    "import/extensions": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
+  }
 }
