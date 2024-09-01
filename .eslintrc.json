@@ -13,6 +13,7 @@
   "rules": {
     "import/extensions": "off",
     "no-underscore-dangle": "off",
+    "react/require-default-props": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
   }
 }
