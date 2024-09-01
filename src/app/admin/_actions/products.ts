@@ -20,6 +20,11 @@ const addProductSchema = z.object({
   image: imageSchema.refine((file) => file.size > 0, 'Required'),
 });
 
+const editProductSchema = addProductSchema.extend({
+  file: fileSchema.optional(),
+  image: imageSchema.optional(),
+});
+
 // eslint-disable-next-line consistent-return
 async function addProduct(prevState: unknown, formData: FormData) {
   const validationResult = addProductSchema.safeParse(Object.fromEntries(formData.entries()));
@@ -34,7 +39,7 @@ async function addProduct(prevState: unknown, formData: FormData) {
   await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
 
   await fs.mkdir(path.join('public', 'products'), { recursive: true });
-  const imagePath = path.join('', 'products', `${crypto.randomUUID()}-${data.file.name}`);
+  const imagePath = path.join('/products', `${crypto.randomUUID()}-${data.image.name}`);
   await fs.writeFile(path.join('public', imagePath), Buffer.from(await data.image.arrayBuffer()));
 
   await db.product.create({
@@ -45,6 +50,46 @@ async function addProduct(prevState: unknown, formData: FormData) {
       imagePath,
       description: data.description,
       isAvailableForPurchase: false,
+    },
+  });
+
+  redirect('/admin/products');
+}
+
+// eslint-disable-next-line consistent-return
+async function updateProduct(id: string, prevState: unknown, formData: FormData) {
+  const validationResult = editProductSchema.safeParse(Object.fromEntries(formData.entries()));
+  if (!validationResult.success) {
+    return validationResult.error.formErrors.fieldErrors;
+  }
+
+  const { data } = validationResult;
+
+  const product = await db.product.findUnique({ where: { id } });
+  if (!product) return notFound();
+
+  let { filePath } = product;
+  if (data.file && data.file.size > 0) {
+    await fs.unlink(product.filePath);
+    filePath = path.join('products', `${crypto.randomUUID()}-${data.file.name}`);
+    await fs.writeFile(filePath, Buffer.from(await data.file.arrayBuffer()));
+  }
+
+  let { imagePath } = product;
+  if (data.image && data.image.size > 0) {
+    await fs.unlink(path.join('public', product.imagePath));
+    imagePath = path.join('/products', `${crypto.randomUUID()}-${data.image.name}`);
+    await fs.writeFile(path.join('public', imagePath), Buffer.from(await data.image.arrayBuffer()));
+  }
+
+  await db.product.update({
+    where: { id },
+    data: {
+      name: data.name,
+      priceInCents: data.priceInCents,
+      filePath,
+      imagePath,
+      description: data.description,
     },
   });
 
@@ -69,4 +114,5 @@ export {
   addProduct,
   toggleProductAvailability,
   deleteProduct,
+  updateProduct,
 };
