@@ -12,6 +12,7 @@
   ],
   "rules": {
     "import/extensions": "off",
+    "no-underscore-dangle": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
   }
 }
