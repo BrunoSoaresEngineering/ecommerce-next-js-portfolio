@@ -1,8 +1,8 @@
 const CURRENCY_FORMATTER = new Intl.NumberFormat('pt-PT', {
   currency: 'EUR',
   style: 'currency',
-  minimumFractionDigits: 0
-})
+  minimumFractionDigits: 0,
+});
 
 function formatCurrency(amount: number) {
   return CURRENCY_FORMATTER.format(amount);
@@ -16,5 +16,5 @@ function formatNumber(number: number) {
 
 export {
   formatCurrency,
-  formatNumber
+  formatNumber,
 };
