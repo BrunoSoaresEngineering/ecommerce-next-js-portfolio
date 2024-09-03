@@ -1,11 +1,18 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from './ui/card';
 
 type DashboardCardProps = {
   title: string,
   subtitle: string,
   body: string
 }
-const DashboardCard = ({ title, subtitle, body }: DashboardCardProps) => {
+
+function DashboardCard({ title, subtitle, body }: DashboardCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -16,6 +23,7 @@ const DashboardCard = ({ title, subtitle, body }: DashboardCardProps) => {
         <p>{body}</p>
       </CardContent>
     </Card>
-  )
+  );
 }
-export default DashboardCard
+
+export default DashboardCard;
