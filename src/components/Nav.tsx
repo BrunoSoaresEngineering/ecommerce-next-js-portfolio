@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { ComponentProps, ReactNode } from 'react';
 import Link from 'next/link';
@@ -9,30 +9,33 @@ type NavProps = {
   children: ReactNode
 };
 
-const Nav = ({ children }: NavProps) => {
+function Nav({ children }: NavProps) {
   return (
-    <nav className='bg-primary text-primary-foreground flex justify-center px-4'>
+    <nav className="bg-primary text-primary-foreground flex justify-center px-4">
       {children}
     </nav>
   );
-};
+}
 
-const NavLink = (props: Omit<ComponentProps<typeof Link>, 'className'>) => {
+function NavLink(props: Omit<ComponentProps<typeof Link>, 'className'>) {
   const pathname = usePathname();
+
+  const { href } = props;
 
   return (
     <Link
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       className={cn(
         'p-4 hover:bg-secondary hover:text-secondary-foreground',
         'focus-visible:bg-secondary focus-visible:text-secondary-foreground',
-        pathname === props.href && 'bg-background text-foreground'
+        pathname === href && 'bg-background text-foreground',
       )}
     />
-  )
+  );
 }
 
 export {
   Nav,
-  NavLink
+  NavLink,
 };
