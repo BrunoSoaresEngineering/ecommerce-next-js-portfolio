@@ -1,16 +1,40 @@
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { Product } from '@prisma/client';
+import { Suspense } from 'react';
 import { Button } from './ui/button';
-import ProductCard from './Product-card';
+import { ProductCard, ProductCardSkeleton } from './Product-card';
+
+function Loading() {
+  return (
+    <>
+      <ProductCardSkeleton />
+      <ProductCardSkeleton />
+      <ProductCardSkeleton />
+    </>
+  );
+}
+
+async function ProductSuspense({ productsFetcher }: { productsFetcher: () => Promise<Product[]> }) {
+  const products = await productsFetcher();
+
+  return (products.map((product) => (
+    <ProductCard
+      key={product.id}
+      id={product.id}
+      name={product.name}
+      priceInCents={product.priceInCents}
+      description={product.description}
+      imagePath={product.imagePath}
+    />
+  )));
+}
 
 type ProductSectionProps = {
   title: string,
   productFetcher: () => Promise<Product[]>,
 }
 async function ProductSection({ title, productFetcher }: ProductSectionProps) {
-  const products = await productFetcher();
-
   return (
     <div className="space-y-4">
       <div className="flex gap-4">
@@ -24,18 +48,12 @@ async function ProductSection({ title, productFetcher }: ProductSectionProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            name={product.name}
-            priceInCents={product.priceInCents}
-            description={product.description}
-            imagePath={product.imagePath}
-          />
-        ))}
+        <Suspense fallback={<Loading />}>
+          <ProductSuspense productsFetcher={productFetcher} />
+        </Suspense>
       </div>
     </div>
   );
 }
+
 export default ProductSection;
