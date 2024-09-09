@@ -8,6 +8,15 @@ function getMostPopularProducts(number: number) {
   });
 }
 
+function getNewestProducts(number: number) {
+  return db.product.findMany({
+    where: { isAvailableForPurchase: true },
+    orderBy: { createdAt: 'desc' },
+    take: number,
+  });
+}
+
 export {
   getMostPopularProducts,
+  getNewestProducts,
 };
