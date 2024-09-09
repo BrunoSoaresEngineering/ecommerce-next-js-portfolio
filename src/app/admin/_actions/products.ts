@@ -5,6 +5,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import db from '@/db/db';
 import { notFound, redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 const fileSchema = z.instanceof(File, { message: 'Required' });
 const imageSchema = fileSchema.refine(
@@ -53,6 +54,9 @@ async function addProduct(prevState: unknown, formData: FormData) {
     },
   });
 
+  revalidatePath('/');
+  revalidatePath('/products');
+
   redirect('/admin/products');
 }
 
@@ -93,11 +97,17 @@ async function updateProduct(id: string, prevState: unknown, formData: FormData)
     },
   });
 
+  revalidatePath('/');
+  revalidatePath('/products');
+
   redirect('/admin/products');
 }
 
 async function toggleProductAvailability(id: string, isAvailableForPurchase: boolean) {
   await db.product.update({ where: { id }, data: { isAvailableForPurchase } });
+
+  revalidatePath('/');
+  revalidatePath('/products');
 }
 
 // eslint-disable-next-line consistent-return
@@ -108,6 +118,9 @@ async function deleteProduct(id: string) {
 
   await fs.unlink(product.filePath);
   await fs.unlink(path.join('public', product.imagePath));
+
+  revalidatePath('/');
+  revalidatePath('/products');
 }
 
 export {
