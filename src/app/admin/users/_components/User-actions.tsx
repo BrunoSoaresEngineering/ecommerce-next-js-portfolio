@@ -27,4 +27,7 @@ function DeleteDropdownItem({ id }: DeleteDropdownItemProps) {
     </DropdownMenuItem>
   );
 }
-export default DeleteDropdownItem;
+
+export {
+  DeleteDropdownItem,
+};

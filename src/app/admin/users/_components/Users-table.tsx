@@ -1,12 +1,17 @@
 import { Order } from '@prisma/client';
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import db from '@/db/db';
 import { formatCurrency, formatNumber } from '@/lib/formatters';
 import { MoreVertical } from 'lucide-react';
-import DeleteDropdownItem from './User-actions';
+import { DeleteDropdownItem } from './User-actions';
 
 function sumOrders(orders: Pick<Order, 'pricePaidInCents'>[]) {
   const sum = orders.reduce((grandTotal, order) => grandTotal + order.pricePaidInCents, 0);
