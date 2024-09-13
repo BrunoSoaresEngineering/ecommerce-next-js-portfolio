@@ -1,15 +1,14 @@
 import db from '@/db/db';
+import { createDownloadLink } from '@/lib/product';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import Stripe from 'stripe';
-
-const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export async function POST(req: NextRequest) {
-  const event = await stripe.webhooks.constructEvent(
+  const event = stripe.webhooks.constructEvent(
     await req.text(),
     req.headers.get('stripe-signature') as string,
     process.env.STRIPE_WEBHOOK_SECRET as string,
@@ -40,12 +39,7 @@ export async function POST(req: NextRequest) {
       update: userToUpsert,
     });
 
-    const downloadVerification = await db.downloadVerification.create({
-      data: {
-        productId,
-        expiresAt: new Date(Date.now() + DAY_IN_MILLISECONDS),
-      },
-    });
+    const downloadVerification = await createDownloadLink(productId);
 
     await resend.emails.send({
       from: `Support <${process.env.SENDER_EMAIL}>`,
@@ -53,7 +47,7 @@ export async function POST(req: NextRequest) {
       subject: 'Order Confirmation',
       react: (
         <div>
-          {downloadVerification.id}
+          {downloadVerification}
         </div>
       ),
     });
