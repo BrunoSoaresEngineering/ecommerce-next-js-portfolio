@@ -1,0 +1,30 @@
+'use client';
+
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+import { deleteUser } from '../../_actions/users';
+
+type DeleteDropdownItemProps = {
+  id: string
+};
+
+function DeleteDropdownItem({ id }: DeleteDropdownItemProps) {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  return (
+    <DropdownMenuItem
+      className="text-destructive"
+      disabled={isPending}
+      onClick={() => startTransition(async () => {
+        await deleteUser(id);
+
+        router.refresh();
+      })}
+    >
+      Delete
+    </DropdownMenuItem>
+  );
+}
+export default DeleteDropdownItem;
