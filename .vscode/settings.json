@@ -3,6 +3,7 @@
     "db",
     "admin",
     "home",
-    "products"
+    "products",
+    "emails"
   ]
 }
