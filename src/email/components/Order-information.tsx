@@ -30,7 +30,7 @@ function OrderInformation({
   serverUrl,
   downloadVerificationId,
 }: Props) {
-  const downloadUrl = new URL(downloadVerificationId, new URL('products/download', serverUrl));
+  const downloadUrl = new URL(`products/download/${downloadVerificationId}`, serverUrl);
   return (
     <>
       <Section>
