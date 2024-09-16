@@ -4,6 +4,7 @@
     "admin",
     "home",
     "products",
-    "emails"
+    "emails",
+    "orders"
   ]
 }
