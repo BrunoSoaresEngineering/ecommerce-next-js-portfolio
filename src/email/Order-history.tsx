@@ -32,8 +32,8 @@ function OrderHistoryEmail({ orders, serverUrl }: OrderHistoryEmailProps) {
       <Preview>Order History and Downloads</Preview>
       <Tailwind>
         <Head />
-        <Body>
-          <Container>
+        <Body className="font-sans bg-white">
+          <Container className="max-w-xl">
             <Heading>Order History</Heading>
             {orders.map((order, index) => (
               <React.Fragment key={order.id}>
