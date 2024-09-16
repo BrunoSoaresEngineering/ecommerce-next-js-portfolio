@@ -1,4 +1,5 @@
 import db from '@/db/db';
+import PurchaseReceiptEmail from '@/email/Purchase-receipt';
 import { createDownloadLink } from '@/lib/product';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
@@ -33,22 +34,51 @@ export async function POST(req: NextRequest) {
         },
       },
     };
-    await db.user.upsert({
+
+    const downloadVerificationPromise = createDownloadLink(productId);
+
+    const dbInsertPromise = db.user.upsert({
       where: { email },
       create: userToUpsert,
       update: userToUpsert,
+      select: {
+        orders: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          take: 1,
+        },
+      },
     });
 
-    const downloadVerification = await createDownloadLink(productId);
+    const productPromise = db.product.findUnique({
+      where: { id: productId },
+      select: {
+        name: true,
+        imagePath: true,
+        description: true,
+      },
+    });
+
+    const [downloadVerification, { orders: [order] }, product] = await Promise.all(
+      [downloadVerificationPromise, dbInsertPromise, productPromise],
+    );
+
+    if (product == null) {
+      return new NextResponse('Bad Request', { status: 400 });
+    }
 
     await resend.emails.send({
       from: `Support <${process.env.SENDER_EMAIL}>`,
       to: email,
       subject: 'Order Confirmation',
       react: (
-        <div>
-          {downloadVerification}
-        </div>
+        <PurchaseReceiptEmail
+          downloadVerificationId={downloadVerification}
+          order={order}
+          product={product}
+          serverUrl={process.env.NEXT_PUBLIC_SERVER_URL as string}
+        />
       ),
     });
   }
