@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project to apply the skills I am learning on this
+Full-stack technology. It is my first e-commerce store and it relies on Next.js, Prisma, Strip
+and Tailwind.
 
-## Getting Started
+This project was meant to be only for knowledge development and can't be considered Production
+ready.
 
-First, run the development server:
+I leave you with some screenshots of the developed pages and emails:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Home page
+![alt text](readme-images/home.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Products page
+![alt text](readme-images/products.png)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Purchase Page
+![alt text](readme-images/purchase.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Purchase Success Page
+![alt text](readme-images/purchase-success.png)
 
-## Learn More
+## Purchase Email
+![alt text](readme-images/purchase-email.png)
 
-To learn more about Next.js, take a look at the following resources:
+# My Orders
+![alt text](readme-images/my-orders.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Admin area
+## Dashboard
+![alt text](readme-images/dashboard.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Simple Browser Authentication for Admin area
+![alt text](readme-images/admin-authentication.png)
 
-## Deploy on Vercel
+## Products Administration
+![alt text](readme-images/product-admin.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## New / Edit product 
+![alt text](readme-images/edit-product.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Customers Administration
+![alt text](readme-images/customers-admin.png)
+
+## Sales Administration
+![alt text](readme-images/sales-administration.png)
